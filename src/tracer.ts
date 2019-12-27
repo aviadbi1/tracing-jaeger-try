@@ -9,7 +9,6 @@ const metrics = new PrometheusMetricsFactory(promClient, serviceName);
 // See schema https://github.com/jaegertracing/jaeger-client-node/blob/master/src/configuration.js#L37
 const config = {
   reporter: {
-    agentHost: "222.222.222.222",
     logSpans: true
   },
   sampler: {

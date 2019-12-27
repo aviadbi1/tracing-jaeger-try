@@ -1,4 +1,4 @@
-# CREATE
+## CREATE Jaeger-Operator and Jaeger instance
 # helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 # kubectl create namespace pulse
 # helm install jaeger-operator jaegertracing/jaeger-operator --version 2.12.3 --set rbac.clusterRole=true --namespace=pulse
@@ -6,9 +6,17 @@
 # kubectl get jaegers
 # kubectl get ingress
 
-# DELETE
+## Create this image
+# docker login
+# docker build -t aviadbi1/myrepo:0.0.2 .
+# docker push aviadbi1/myrepo:0.0.2
+# docker run -d -p 3000:3000 aviadbi1/myrepo:0.0.2
+# kubectl create deployment trace-try --image=aviadbi1/myrepo:0.0.2 --namespace=pulse
+
+## DELETE Jaeger
 # kubectl delete jaeger simple
 # kubectl delete crd jaegers.jaegertracing.io
+# helm delete jaeger-operator
 
 # kubectl expose deployment jaeger-operator --type=NodePort --name=example-service
 # kubectl cluster-info
