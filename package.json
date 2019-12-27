@@ -1,0 +1,39 @@
+{
+  "name": "tracing-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "tsc": "tsc",
+    "build": "npm-run-all clean lint tsc",
+    "dev:start": "npm-run-all build start",
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jaeger-client": "^3.17.1",
+    "opentracing": "^0.14.4",
+    "prom-client": "^11.5.3",
+    "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "@types/bunyan": "^1.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.2",
+    "@types/jaeger-client": "^3.15.3",
+    "@types/node": "^13.1.1",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1"
+  }
+}

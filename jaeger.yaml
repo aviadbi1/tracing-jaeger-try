@@ -1,0 +1,29 @@
+# CREATE
+# helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
+# kubectl create namespace pulse
+# helm install jaeger-operator jaegertracing/jaeger-operator --version 2.12.3 --set rbac.clusterRole=true --namespace=pulse
+# kubectl apply -f jaeger.yaml
+# kubectl get jaegers
+# kubectl get ingress
+
+# DELETE
+# kubectl delete jaeger simple
+# kubectl delete crd jaegers.jaegertracing.io
+
+# kubectl expose deployment jaeger-operator --type=NodePort --name=example-service
+# kubectl cluster-info
+
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: simple
+  namespace: pulse
+spec:
+  ingress:
+    enabled: true
+  strategy: allInOne
+  sampling:
+    options:
+      default_strategy:
+        type: const
+        param: 1
