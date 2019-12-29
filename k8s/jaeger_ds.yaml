@@ -1,0 +1,11 @@
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: simple-ds
+  namespace: pulse
+spec:
+  ingress:
+    enabled: true
+  agent:
+    strategy: DaemonSet
+  strategy: allInOne

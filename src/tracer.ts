@@ -8,13 +8,6 @@ const metrics = new PrometheusMetricsFactory(promClient, serviceName);
 
 // See schema https://github.com/jaegertracing/jaeger-client-node/blob/master/src/configuration.js#L37
 const config = {
-  reporter: {
-    logSpans: true
-  },
-  sampler: {
-    param: 1,
-    type: "const"
-  },
   serviceName
 };
 const options = {

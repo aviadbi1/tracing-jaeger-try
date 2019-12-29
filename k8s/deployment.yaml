@@ -1,0 +1,80 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: trace-try
+  namespace: pulse
+  selfLink: /apis/apps/v1/namespaces/pulse/deployments/trace-try
+  uid: 874f6414-8571-4de3-8d30-76792ffe0d28
+  resourceVersion: "750523"
+  generation: 5
+  creationTimestamp: "2019-12-27T15:01:56Z"
+  labels:
+    app: trace-try
+    sidecar.jaegertracing.io/injected: simple
+  annotations:
+    deployment.kubernetes.io/revision: "4"
+    prometheus.io/port: "5778"
+    prometheus.io/scrape: "true"
+    sidecar.jaegertracing.io/inject: simple
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trace-try
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: trace-try
+    spec:
+      containers:
+        - name: myrepo
+          image: "aviadbi1/myrepo:0.0.3"
+          env:
+            - name: JAEGER_SERVICE_NAME
+              value: trace-try.pulse
+            - name: JAEGER_PROPAGATION
+              value: "jaeger,b3"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+        - name: jaeger-agent
+          image: "jaegertracing/jaeger-agent:1.16.0"
+          args:
+            - >-
+              --reporter.grpc.host-port=dns:///simple-collector-headless.pulse:14250
+            - "--reporter.type=grpc"
+          ports:
+            - name: zk-compact-trft
+              containerPort: 5775
+              protocol: UDP
+            - name: config-rest
+              containerPort: 5778
+              protocol: TCP
+            - name: jg-compact-trft
+              containerPort: 6831
+              protocol: UDP
+            - name: jg-binary-trft
+              containerPort: 6832
+              protocol: UDP
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
